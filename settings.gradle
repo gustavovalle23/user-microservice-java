@@ -1,0 +1,5 @@
+rootProject.name = 'user-microservice'
+include 'domain'
+include 'application'
+include 'infrastructure'
+
