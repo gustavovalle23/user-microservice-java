@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  postgresql:
+    container_name: user-microservice-postgresql
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=test
+    ports:
+      - "5432:5432"
+    networks:
+      - user-microservice-network
+
+networks:
+  user-microservice-network:
