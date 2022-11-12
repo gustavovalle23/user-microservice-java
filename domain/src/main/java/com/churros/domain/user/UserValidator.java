@@ -1,5 +1,6 @@
 package com.churros.domain.user;
 
+import com.churros.domain.validation.Error;
 import com.churros.domain.validation.ValidationHandler;
 import com.churros.domain.validation.Validator;
 
@@ -14,6 +15,7 @@ public class UserValidator extends Validator {
 
 	@Override
 	public void validate() {
-		System.out.println(user);
+		if (this.user.getEmail().length() == 0)
+			this.validationHandler().append(new Error("Should be a valid e-mail!"));
 	}
 }
