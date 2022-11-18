@@ -1,6 +1,6 @@
 package com.churros.domain;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ public class UserTest {
 		final String name = "Test Name User";
 		final String email = "test@example";
 		final String password = "fakepassword";
-		final Instant birthDate = Instant.now();
+		final LocalDate birthDate = LocalDate.now();
 		final Boolean isActive = true;
 
 		final User user = User.newUser(name, email, password, birthDate, isActive);
@@ -38,7 +38,7 @@ public class UserTest {
 		final String name = "Test Name User";
 		final String email = "";
 		final String password = "fakepassword";
-		final Instant birthDate = Instant.now();
+		final LocalDate birthDate = LocalDate.now();
 		final Boolean isActive = true;
 
 		final User user = User.newUser(name, email, password, birthDate, isActive);

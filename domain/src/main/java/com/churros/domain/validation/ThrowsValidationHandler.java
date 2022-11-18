@@ -8,7 +8,7 @@ public class ThrowsValidationHandler implements ValidationHandler {
 
 	@Override
 	public ValidationHandler append(final Error anError) {
-		throw com.churros.domain.exceptions.DomainException.with(anError);
+		throw DomainException.with(anError);
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package com.churros.infrastructure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.churros.application.UseCase;
+
 public class TestUseCase {
 
     @Test

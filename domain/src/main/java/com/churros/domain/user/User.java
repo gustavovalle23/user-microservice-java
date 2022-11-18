@@ -1,6 +1,7 @@
 package com.churros.domain.user;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 import com.churros.domain.AggregateRoot;
 import com.churros.domain.validation.ValidationHandler;
@@ -9,13 +10,13 @@ public class User extends AggregateRoot<UserID> {
 	private String name;
 	private String email;
 	private String password;
-	private Instant birthDate;
+	private LocalDate birthDate;
 	private boolean active;
 	private Instant createdAt;
 	private Instant updatedAt;
 	private Instant deletedAt;
 
-	private User(UserID id, String name, String email, String password, Instant birthDate, boolean active,
+	private User(UserID id, String name, String email, String password, LocalDate birthDate, boolean active,
 			Instant createdAt, Instant updatedAt, Instant deletedAt) {
 		super(id);
 		this.name = name;
@@ -28,7 +29,7 @@ public class User extends AggregateRoot<UserID> {
 		this.deletedAt = deletedAt;
 	}
 
-	public static User newUser(final String name, final String email, final String password, final Instant birthDate, final Boolean isActive) {
+	public static User newUser(final String name, final String email, final String password, final LocalDate birthDate, final Boolean isActive) {
 		final UserID id = UserID.unique();
 		final Instant now = Instant.now();
         final Instant deletedAt = isActive ? null : now;
@@ -81,7 +82,7 @@ public class User extends AggregateRoot<UserID> {
 		return password;
 	}
 
-	public Instant getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
