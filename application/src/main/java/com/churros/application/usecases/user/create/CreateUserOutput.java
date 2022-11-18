@@ -1,26 +1,39 @@
 package com.churros.application.usecases.user.create;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 public record CreateUserOutput(
+		String id,
 		String name,
 		String email,
 		String password,
 		LocalDate birthDate,
 		Boolean active,
-		String createdAt,
-		String updatedAt,
-		String deletedAt) {
+		Instant createdAt,
+		Instant updatedAt,
+		Instant deletedAt) {
 
 	public static CreateUserOutput with(
+			final String id,
 			final String name,
 			final String email,
 			final String password,
 			final LocalDate birthDate,
 			final Boolean active,
-			final String createdAt,
-			final String updatedAt,
-			final String deletedAt) {
-		return new CreateUserOutput(name, email, password, birthDate, active, createdAt, updatedAt, deletedAt);
+			final Instant createdAt,
+			final Instant updatedAt,
+			final Instant deletedAt) {
+
+		return new CreateUserOutput(
+				id,
+				name,
+				email,
+				password,
+				birthDate,
+				active,
+				createdAt,
+				updatedAt,
+				deletedAt);
 	}
 };
