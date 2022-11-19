@@ -34,9 +34,26 @@ public class UserTest {
 	}
 
 	@Test
-	public void givenAnInvalidEmailParam_whenCallNewUser_thenShouldReceiveError() {
+	public void givenAnInvalidEmailEmptyParam_whenCallNewUser_thenShouldReceiveError() {
 		final String name = "Test Name User";
 		final String email = "";
+		final String password = "fakepassword";
+		final LocalDate birthDate = LocalDate.now();
+		final Boolean isActive = true;
+
+		final User user = User.newUser(name, email, password, birthDate, isActive);
+
+		final DomainException actualException = Assertions.assertThrows(DomainException.class,
+				() -> user.validate(new ThrowsValidationHandler()));
+
+		Assertions.assertEquals(1, actualException.getErrors().size());
+		Assertions.assertEquals("Should be a valid e-mail!", actualException.getErrors().get(0).message());
+	}
+
+	@Test
+	public void givenAnInvalidEmailFormatParam_whenCallNewUser_thenShouldReceiveError() {
+		final String name = "Test Name User";
+		final String email = "test@";
 		final String password = "fakepassword";
 		final LocalDate birthDate = LocalDate.now();
 		final Boolean isActive = true;
