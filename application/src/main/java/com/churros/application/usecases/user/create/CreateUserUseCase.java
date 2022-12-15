@@ -3,10 +3,18 @@ package com.churros.application.usecases.user.create;
 import java.time.Instant;
 
 import com.churros.application.UseCase;
+import com.churros.domain.user.UserGateway;
 
 public class CreateUserUseCase extends UseCase<CreateUserInput, CreateUserOutput> {
+	final UserGateway userGateway;
+
+	public CreateUserUseCase(final UserGateway userGateway) {
+		this.userGateway = userGateway;
+	}
+
+	@Override
 	public CreateUserOutput execute(CreateUserInput input) {
-		return new CreateUserOutput(
+		return CreateUserOutput.from(
 				"123",
 				input.name(),
 				input.email(),

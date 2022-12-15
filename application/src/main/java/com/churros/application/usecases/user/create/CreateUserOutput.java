@@ -3,6 +3,8 @@ package com.churros.application.usecases.user.create;
 import java.time.Instant;
 import java.time.LocalDate;
 
+import com.churros.domain.user.User;
+
 public record CreateUserOutput(
 		String id,
 		String name,
@@ -14,7 +16,7 @@ public record CreateUserOutput(
 		Instant updatedAt,
 		Instant deletedAt) {
 
-	public static CreateUserOutput with(
+	public static CreateUserOutput from(
 			final String id,
 			final String name,
 			final String email,
@@ -36,4 +38,18 @@ public record CreateUserOutput(
 				updatedAt,
 				deletedAt);
 	}
-};
+
+	public static CreateUserOutput from(User user) {
+
+		return new CreateUserOutput(
+				user.getId().getValue(),
+				user.getName(),
+				user.getEmail(),
+				user.getEmail(),
+				user.getBirthDate(),
+				user.isActive(),
+				user.getCreatedAt(),
+				user.getUpdatedAt(),
+				user.getDeletedAt());
+	}
+}

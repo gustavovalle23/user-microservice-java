@@ -29,10 +29,12 @@ public class User extends AggregateRoot<UserID> {
 		this.deletedAt = deletedAt;
 	}
 
-	public static User newUser(final String name, final String email, final String password, final LocalDate birthDate, final Boolean isActive) {
+	public static User newUser(final String name, final String email, final String password, final LocalDate birthDate,
+			final Boolean isActive) {
 		final UserID id = UserID.unique();
 		final Instant now = Instant.now();
-        final Instant deletedAt = isActive ? null : now;
+		final Instant deletedAt = Boolean.TRUE.equals(isActive) ? null : now;
+
 		return new User(id, name, email, password, birthDate, isActive, now, now, deletedAt);
 	}
 
@@ -45,6 +47,16 @@ public class User extends AggregateRoot<UserID> {
 	public String toString() {
 		return "User [name=" + name + ", email=" + email + ", birthDate=" + birthDate + ", active=" + active
 				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return super.equals(o);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	public User activate() {
@@ -64,9 +76,8 @@ public class User extends AggregateRoot<UserID> {
 		return this;
 	}
 
-	public User update(final String name, final Boolean isActive) {
+	public User update(final String name) {
 		this.name = name;
-
 		return this;
 	}
 

@@ -9,10 +9,10 @@ import com.churros.domain.exceptions.DomainException;
 import com.churros.domain.user.User;
 import com.churros.domain.validation.ThrowsValidationHandler;
 
-public class UserTest {
+class UserTest {
 
 	@Test
-	public void givenAValidParams_whenCallNewUser_thenInstantiateAnUser() {
+	void givenAValidParams_whenCallNewUser_thenInstantiateAnUser() {
 		final String name = "Test Name User";
 		final String email = "test@example";
 		final String password = "fakepassword";
@@ -34,7 +34,7 @@ public class UserTest {
 	}
 
 	@Test
-	public void givenAnInvalidEmailEmptyParam_whenCallNewUser_thenShouldReceiveError() {
+	void givenAnInvalidEmailEmptyParam_whenCallNewUser_thenShouldReceiveError() {
 		final String name = "Test Name User";
 		final String email = "";
 		final String password = "fakepassword";
@@ -43,15 +43,17 @@ public class UserTest {
 
 		final User user = User.newUser(name, email, password, birthDate, isActive);
 
+		ThrowsValidationHandler error = new ThrowsValidationHandler();
+
 		final DomainException actualException = Assertions.assertThrows(DomainException.class,
-				() -> user.validate(new ThrowsValidationHandler()));
+				() -> user.validate(error));
 
 		Assertions.assertEquals(1, actualException.getErrors().size());
 		Assertions.assertEquals("Should be a valid e-mail!", actualException.getErrors().get(0).message());
 	}
 
 	@Test
-	public void givenAnInvalidEmailFormatParam_whenCallNewUser_thenShouldReceiveError() {
+	void givenAnInvalidEmailFormatParam_whenCallNewUser_thenShouldReceiveError() {
 		final String name = "Test Name User";
 		final String email = "test@";
 		final String password = "fakepassword";
@@ -60,8 +62,10 @@ public class UserTest {
 
 		final User user = User.newUser(name, email, password, birthDate, isActive);
 
+		ThrowsValidationHandler error = new ThrowsValidationHandler();
+
 		final DomainException actualException = Assertions.assertThrows(DomainException.class,
-				() -> user.validate(new ThrowsValidationHandler()));
+				() -> user.validate(error));
 
 		Assertions.assertEquals(1, actualException.getErrors().size());
 		Assertions.assertEquals("Should be a valid e-mail!", actualException.getErrors().get(0).message());
