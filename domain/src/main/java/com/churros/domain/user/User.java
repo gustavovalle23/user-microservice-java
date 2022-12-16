@@ -8,11 +8,11 @@ import com.churros.domain.validation.ValidationHandler;
 
 public class User extends AggregateRoot<UserID> {
 	private String name;
-	private String email;
-	private String password;
-	private LocalDate birthDate;
+	private final String email;
+	private final String password;
+	private final LocalDate birthDate;
 	private boolean active;
-	private Instant createdAt;
+	private final Instant createdAt;
 	private Instant updatedAt;
 	private Instant deletedAt;
 
