@@ -1,11 +1,13 @@
 package com.churros.application.usecases.user.create;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 import com.churros.application.UseCase;
+import com.churros.domain.user.User;
 import com.churros.domain.user.UserGateway;
 
-public class CreateUserUseCase extends UseCase<CreateUserInput, CreateUserOutput> {
+public class CreateUserUseCase implements UseCase<CreateUserInput, CreateUserOutput> {
 	final UserGateway userGateway;
 
 	public CreateUserUseCase(final UserGateway userGateway) {
@@ -14,15 +16,14 @@ public class CreateUserUseCase extends UseCase<CreateUserInput, CreateUserOutput
 
 	@Override
 	public CreateUserOutput execute(CreateUserInput input) {
-		return CreateUserOutput.from(
-				"123",
-				input.name(),
-				input.email(),
-				input.password(),
-				input.birthDate(),
-				true,
-				Instant.now(),
-				Instant.now(),
-				null);
+		final String name = input.name();
+		final String email = input.email();
+		final String password = input.password();
+		final LocalDate birthDate = input.birthDate();
+		final boolean isActive = true;
+
+		final User anUser = User.newUser(name, email, password, birthDate, isActive);
+
+		return CreateUserOutput.from(this.userGateway.create(anUser));
 	}
 }

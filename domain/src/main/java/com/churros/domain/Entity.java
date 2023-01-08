@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import com.churros.domain.validation.ValidationHandler;
 
-public abstract class Entity<ID extends Identifier> {
+public abstract class Entity<ID> {
 
     protected final ID id;
 
