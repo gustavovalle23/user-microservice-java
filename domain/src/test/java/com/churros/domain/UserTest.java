@@ -27,7 +27,7 @@ class UserTest {
 		Assertions.assertEquals(user.getPassword(), password);
 		Assertions.assertEquals(user.getBirthDate(), birthDate);
 		Assertions.assertEquals(user.isActive(), isActive);
-		Assertions.assertNotNull(user.getId());
+		Assertions.assertNull(user.getId());
 		Assertions.assertNotNull(user.getCreatedAt());
 		Assertions.assertNotNull(user.getUpdatedAt());
 		Assertions.assertNull(user.getDeletedAt());
