@@ -7,13 +7,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.churros.application.UseCaseTest;
-import com.churros.domain.user.UserGateway;
+import com.churros.domain.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.churros.application.usecases.user.create.CreateUserInput;
 import com.churros.application.usecases.user.create.CreateUserOutput;
-import com.churros.application.usecases.user.create.CreateUserUseCase;
+import com.churros.application.usecases.user.create.DefaultCreateUserUseCase;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,22 +23,22 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 class TestCreateUserUseCase extends UseCaseTest {
 
 	@InjectMocks
-	private CreateUserUseCase useCase;
+	private DefaultCreateUserUseCase useCase;
 
 	@Mock
-	private UserGateway userGateway;
+	private UserRepository userRepository;
 
 	@Override
 	protected List<Object> getMocks() {
-		return List.of(userGateway);
+		return List.of(userRepository);
 	}
 
 	@Test
 	void givenAValidInput_whenCallsCreateUser_shouldReturnUser() {
-		CreateUserUseCase usecase = new CreateUserUseCase(userGateway);
+		DefaultCreateUserUseCase usecase = new DefaultCreateUserUseCase(userRepository);
 		CreateUserInput input = new CreateUserInput("Tester", "tester@gmail.com", "123", LocalDate.now());
 
-		when(userGateway.create(any()))
+		when(userRepository.create(any()))
 				.thenAnswer(returnsFirstArg());
 
 		CreateUserOutput output = usecase.execute(input);
