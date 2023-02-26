@@ -70,4 +70,29 @@ class UserTest {
 		Assertions.assertEquals(1, actualException.getErrors().size());
 		Assertions.assertEquals("Should be a valid e-mail!", actualException.getErrors().get(0).message());
 	}
+
+	@Test
+	void givenABirthDateGreaterThan18_whenCallCanBuyAlcohol_thenShouldReturnTrue() {
+		final String name = "Test Name User";
+		final String email = "test@email.com";
+		final String password = "fakepassword";
+		final LocalDate birthDate = LocalDate.of(2000, 1, 1);
+		final Boolean isActive = true;
+		final User user = User.newUser(name, email, password, birthDate, isActive);
+
+		Assertions.assertTrue(user.canBuyAlcohol());
+	}
+
+
+	@Test
+	void givenABirthDateLowerThan18_whenCallCanBuyAlcohol_thenShouldReturnFalse() {
+		final String name = "Test Name User";
+		final String email = "test@email.com";
+		final String password = "fakepassword";
+		final LocalDate birthDate = LocalDate.now();
+		final Boolean isActive = true;
+		final User user = User.newUser(name, email, password, birthDate, isActive);
+
+		Assertions.assertFalse(user.canBuyAlcohol());
+	}
 }

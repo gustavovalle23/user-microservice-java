@@ -2,6 +2,7 @@ package com.churros.domain.exceptions;
 
 import com.churros.domain.validation.Error;
 
+import java.util.Collection;
 import java.util.List;
 
 public class DomainException extends NoStacktraceException {
@@ -21,7 +22,7 @@ public class DomainException extends NoStacktraceException {
         return new DomainException("", anErrors);
     }
 
-    public List<Error> getErrors() {
+    public Collection<? extends java.lang.Error> getErrors() {
         return errors;
     }
 }

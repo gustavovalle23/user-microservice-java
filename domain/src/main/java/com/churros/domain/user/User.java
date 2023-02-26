@@ -2,157 +2,181 @@ package com.churros.domain.user;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Period;
 
+import com.churros.domain.exceptions.NotificationException;
+import com.churros.domain.validation.Notification;
 import com.churros.domain.validation.ValidationHandler;
 
 public class User {
-	private Double id;
-	private String name;
-	private String email;
-	private String password;
-	private LocalDate birthDate;
-	private boolean active;
-	private Instant createdAt;
-	private Instant updatedAt;
-	private Instant deletedAt;
+    private Double id;
+    private String name;
+    private final String email;
+    private final String password;
+    private final LocalDate birthDate;
+    private boolean active;
+    private final Instant createdAt;
+    private Instant updatedAt;
+    private Instant deletedAt;
 
-	private User(
-			final Double id,
-			final String name,
-			final String email,
-			final String password,
-			final LocalDate birthDate,
-			final boolean active,
-			final Instant createdAt,
-			final Instant updatedAt,
-			final Instant deletedAt) {
+    private User(
+            final Double id,
+            final String name,
+            final String email,
+            final String password,
+            final LocalDate birthDate,
+            final boolean active,
+            final Instant createdAt,
+            final Instant updatedAt,
+            final Instant deletedAt) {
 
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.birthDate = birthDate;
-		this.active = active;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
-	}
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.birthDate = birthDate;
+        this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
 
-	private User(
-			final String name,
-			final String email,
-			final String password,
-			final LocalDate birthDate,
-			final boolean active,
-			final Instant createdAt,
-			final Instant updatedAt,
-			final Instant deletedAt) {
+        selfValidate();
+    }
 
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.birthDate = birthDate;
-		this.active = active;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
-	}
+    private User(
+            final String name,
+            final String email,
+            final String password,
+            final LocalDate birthDate,
+            final boolean active,
+            final Instant createdAt,
+            final Instant updatedAt,
+            final Instant deletedAt) {
 
-	public static User newUser(final Double id, final String name, final String email, final String password,
-			final LocalDate birthDate,
-			final Boolean isActive) {
-		final Instant now = Instant.now();
-		final Instant deletedAt = Boolean.TRUE.equals(isActive) ? null : now;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.birthDate = birthDate;
+        this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
 
-		return new User(id, name, email, password, birthDate, isActive, now, now, deletedAt);
-	}
+        selfValidate();
+    }
 
-	public static User newUser(final String name, final String email, final String password,
-			final LocalDate birthDate,
-			final Boolean isActive) {
-		final Instant now = Instant.now();
-		final Instant deletedAt = Boolean.TRUE.equals(isActive) ? null : now;
+    public void selfValidate() {
+        final var notification = Notification.create();
+        validate(notification);
 
-		return new User(name, email, password, birthDate, isActive, now, now, deletedAt);
-	}
+        if (notification.hasError()) {
+            throw new NotificationException("Failed to create a Aggregate Genre", notification);
+        }
+    }
 
-	public void validate(ValidationHandler handler) {
-		new UserValidator(this, handler).validate();
-	}
+    public void validate(ValidationHandler handler) {
+        new UserValidator(this, handler).validate();
+    }
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", birthDate="
-				+ birthDate + ", active=" + active + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ ", deletedAt=" + deletedAt + "]";
-	}
 
-	@Override
-	public boolean equals(Object o) {
-		return super.equals(o);
-	}
+    public static User newUser(final Double id, final String name, final String email, final String password,
+                               final LocalDate birthDate,
+                               final Boolean isActive) {
+        final Instant now = Instant.now();
+        final Instant deletedAt = Boolean.TRUE.equals(isActive) ? null : now;
 
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
+        return new User(id, name, email, password, birthDate, isActive, now, now, deletedAt);
+    }
 
-	public User activate() {
-		this.deletedAt = null;
-		this.active = true;
-		this.updatedAt = Instant.now();
-		return this;
-	}
+    public static User newUser(final String name, final String email, final String password,
+                               final LocalDate birthDate,
+                               final Boolean isActive) {
+        final Instant now = Instant.now();
+        final Instant deletedAt = Boolean.TRUE.equals(isActive) ? null : now;
 
-	public User deactivate() {
-		if (getDeletedAt() == null) {
-			this.deletedAt = Instant.now();
-		}
+        return new User(name, email, password, birthDate, isActive, now, now, deletedAt);
+    }
 
-		this.active = false;
-		this.updatedAt = Instant.now();
-		return this;
-	}
 
-	public User update(final String name) {
-		this.name = name;
-		return this;
-	}
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", birthDate="
+                + birthDate + ", active=" + active + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+                + ", deletedAt=" + deletedAt + "]";
+    }
 
-	public String getName() {
-		return name;
-	}
 
-	public String getEmail() {
-		return email;
-	}
+    public User activate() {
+        this.deletedAt = null;
+        this.active = true;
+        this.updatedAt = Instant.now();
+        return this;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public User inactivate() {
+        if (getDeletedAt() == null) {
+            this.deletedAt = Instant.now();
+        }
 
-	public LocalDate getBirthDate() {
-		return birthDate;
-	}
+        this.active = false;
+        this.updatedAt = Instant.now();
+        return this;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public User update(final String name) {
+        this.name = name;
+        return this;
+    }
 
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Instant getUpdatedAt() {
-		return updatedAt;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public Instant getDeletedAt() {
-		return deletedAt;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public Double getId() {
-		return id;
-	}
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Instant getDeletedAt() {
+        return deletedAt;
+    }
+
+    public Double getId() {
+        return id;
+    }
+
+
+    public boolean canBuyAlcohol() {
+        return Period.between(birthDate, LocalDate.now()).getYears() > 17;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
 }
