@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Notification implements ValidationHandler {
 
-    private final List<java.lang.Error> errors;
+    private final List<String> errors;
 
-    private Notification(final List<java.lang.Error> errors) {
+    private Notification(final List<String> errors) {
         this.errors = errors;
     }
 
@@ -18,15 +18,15 @@ public class Notification implements ValidationHandler {
     }
 
     public static Notification create(final Throwable t) {
-        return create(new java.lang.Error(t.getMessage()));
+        return create(t.getMessage());
     }
 
-    public static Notification create(final java.lang.Error anError) {
+    public static Notification create(final String anError) {
         return new Notification(new ArrayList<>()).append(anError);
     }
 
     @Override
-    public Notification append(final java.lang.Error anError) {
+    public Notification append(final String anError) {
         this.errors.add(anError);
         return this;
     }
@@ -44,13 +44,13 @@ public class Notification implements ValidationHandler {
         } catch (final DomainException ex) {
             this.errors.addAll(ex.getErrors());
         } catch (final Throwable t) {
-            this.errors.add(new java.lang.Error(t.getMessage()));
+            this.errors.add(t.getMessage());
         }
         return null;
     }
 
     @Override
-    public List<Error> getErrors() {
+    public List<String> getErrors() {
         return this.errors;
     }
 }

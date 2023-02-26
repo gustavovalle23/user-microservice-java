@@ -7,7 +7,7 @@ import java.util.List;
 public class ThrowsValidationHandler implements ValidationHandler {
 
 	@Override
-	public ValidationHandler append(final Error anError) {
+	public ValidationHandler append(final String anError) {
 		throw DomainException.with(anError);
 	}
 
@@ -21,12 +21,12 @@ public class ThrowsValidationHandler implements ValidationHandler {
 		try {
 			return aValidation.validate();
 		} catch (final Exception ex) {
-			throw DomainException.with(new Error(ex.getMessage()));
+			throw DomainException.with(ex.getMessage());
 		}
 	}
 
 	@Override
-	public List<Error> getErrors() {
+	public List<String> getErrors() {
 		return List.of();
 	}
 }

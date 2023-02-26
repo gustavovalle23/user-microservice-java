@@ -20,6 +20,6 @@ public class UserValidator extends Validator {
 	@Override
 	public void validate() {
 		if (!this.pattern.matcher(this.user.getEmail()).find())
-			this.validationHandler().append(new Error("Should be a valid e-mail!"));
+			this.validationHandler().append("Should be a valid e-mail!");
 	}
 }

@@ -1,4 +1,4 @@
 package com.churros.domain;
 
-public interface ValueObject {
+public abstract class ValueObject {
 }

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import com.churros.domain.user.User;
 
 public record CreateUserOutput(
-		Double id,
+		String id,
 		String name,
 		String email,
 		String password,
@@ -42,7 +42,7 @@ public record CreateUserOutput(
 	public static CreateUserOutput from(User user) {
 
 		return new CreateUserOutput(
-				user.getId(),
+				user.getId().getValue(),
 				user.getName(),
 				user.getEmail(),
 				user.getEmail(),

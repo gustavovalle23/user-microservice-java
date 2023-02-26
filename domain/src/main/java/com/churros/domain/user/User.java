@@ -4,12 +4,13 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 
+import com.churros.domain.AggregateRoot;
 import com.churros.domain.exceptions.NotificationException;
 import com.churros.domain.validation.Notification;
 import com.churros.domain.validation.ValidationHandler;
 
-public class User {
-    private Double id;
+public class User extends AggregateRoot<UserID> {
+    private UserID id;
     private String name;
     private final String email;
     private final String password;
@@ -20,7 +21,7 @@ public class User {
     private Instant deletedAt;
 
     private User(
-            final Double id,
+            final UserID id,
             final String name,
             final String email,
             final String password,
@@ -30,29 +31,7 @@ public class User {
             final Instant updatedAt,
             final Instant deletedAt) {
 
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.birthDate = birthDate;
-        this.active = active;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
-
-        selfValidate();
-    }
-
-    private User(
-            final String name,
-            final String email,
-            final String password,
-            final LocalDate birthDate,
-            final boolean active,
-            final Instant createdAt,
-            final Instant updatedAt,
-            final Instant deletedAt) {
-
+        super(id);
         this.name = name;
         this.email = email;
         this.password = password;
@@ -70,7 +49,7 @@ public class User {
         validate(notification);
 
         if (notification.hasError()) {
-            throw new NotificationException("Failed to create a Aggregate Genre", notification);
+            throw new NotificationException("Failed to create a User", notification);
         }
     }
 
@@ -79,7 +58,7 @@ public class User {
     }
 
 
-    public static User newUser(final Double id, final String name, final String email, final String password,
+    public static User newUser(final UserID id, final String name, final String email, final String password,
                                final LocalDate birthDate,
                                final Boolean isActive) {
         final Instant now = Instant.now();
@@ -91,10 +70,12 @@ public class User {
     public static User newUser(final String name, final String email, final String password,
                                final LocalDate birthDate,
                                final Boolean isActive) {
+
+        final UserID id = UserID.unique();
         final Instant now = Instant.now();
         final Instant deletedAt = Boolean.TRUE.equals(isActive) ? null : now;
 
-        return new User(name, email, password, birthDate, isActive, now, now, deletedAt);
+        return new User(id, name, email, password, birthDate, isActive, now, now, deletedAt);
     }
 
 
@@ -158,10 +139,6 @@ public class User {
 
     public Instant getDeletedAt() {
         return deletedAt;
-    }
-
-    public Double getId() {
-        return id;
     }
 
 
