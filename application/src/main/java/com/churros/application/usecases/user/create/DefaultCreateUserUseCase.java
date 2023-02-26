@@ -15,18 +15,12 @@ public class DefaultCreateUserUseCase implements UseCase<CreateUserInput, Create
 	}
 
 	@Override
-	public CreateUserOutput execute(final CreateUserInput user) {
-		if (this.userRepository.findByEmail(user.email()).isPresent()) {
-			throw new UserAlreadyExistsException(user.email());
+	public CreateUserOutput execute(final CreateUserInput input) {
+		if (this.userRepository.findByEmail(input.email()).isPresent()) {
+			throw new UserAlreadyExistsException(input.email());
 		}
 
-		final String name = user.name();
-		final String email = user.email();
-		final String password = user.password();
-		final LocalDate birthDate = user.birthDate();
-		final boolean isActive = true;
-
-		final User anUser = User.newUser(name, email, password, birthDate, isActive);
+		final User anUser = User.newUser(input.name(), input.email(), input.password(), input.birthDate(), true);
 
 		User createdUser = this.userRepository.create(anUser);
 		return CreateUserOutput.from(createdUser);

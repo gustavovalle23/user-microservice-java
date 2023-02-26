@@ -17,7 +17,7 @@ public record CreateUserOutput(
 		Instant deletedAt) {
 
 	public static CreateUserOutput from(
-			final Double id,
+			final String id,
 			final String name,
 			final String email,
 			final String password,

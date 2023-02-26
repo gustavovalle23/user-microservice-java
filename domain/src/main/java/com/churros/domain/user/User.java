@@ -10,7 +10,6 @@ import com.churros.domain.validation.Notification;
 import com.churros.domain.validation.ValidationHandler;
 
 public class User extends AggregateRoot<UserID> {
-    private UserID id;
     private String name;
     private final String email;
     private final String password;
@@ -19,6 +18,8 @@ public class User extends AggregateRoot<UserID> {
     private final Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
+
+
 
     private User(
             final UserID id,
